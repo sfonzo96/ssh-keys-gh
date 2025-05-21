@@ -1,0 +1,114 @@
+#!/bin/bash
+
+PROGNAME="$(basename $0)"
+
+show_usage() {
+	echo "$PROGNAME: Set SSH keys for a user"
+	echo "Usage: $PROGNAME [ -h, --help | -s, --show | -c, --check | -g, --generate email]" 
+	return
+}
+
+check_existing_ssh_key() {
+	if [[ -f ~/.ssh/id_ed25519.pub ]]; then
+		echo "SSH key already exists."
+		exit 0
+	else
+		echo "No SSH key found."
+		exit 1
+	fi
+}
+
+show_ssh_key() {
+	if [[ -f ~/.ssh/id_ed25519.pub ]]; then
+		echo "Your SSH public key is:"
+		cat ~/.ssh/id_ed25519.pub
+	else
+		echo "No SSH key found."
+	fi
+}
+
+install_ssh_keygen() {
+	if ! command -v ssh-keygen &>/dev/null; then
+		echo "ssh-keygen is not installed. Please install it first. Do you want to install it now? (Y/n)"
+		read -r install_ssh_keygen
+		if [[ "$install_ssh_keygen" =~ ^[Yy]$ ]]; then
+			sudo apt-get install openssh-client
+		else
+			echo "ssh-keygen is required to generate SSH keys. Exiting."
+		exit 1
+		fi
+	fi
+}
+
+generate_ssh_key() {
+	install_ssh_keygen
+
+	if [[ -d ~/.ssh && -f ~/.ssh/id_ed25519.pub ]]; then
+		echo "SSH key already exists. Please remove it before generating a new one."
+		exit 1
+	fi
+
+	if [[ ! -d ~/.ssh ]]; then
+		echo "Creating .ssh directory..."
+		mkdir -p ~/.ssh
+		chmod 700 ~/.ssh
+	fi
+	
+	echo "Generating SSH key for $email..."
+	ssh-keygen -t ed25519 -C "$email" -f ~/.ssh/id_ed25519 -N "" # -t is type -C is comment -f is file -N "" is no passphrase
+	echo "SSH key generated successfully. Your public key is:"
+	show_ssh_key
+	exit 0
+}
+
+add_to_agent() {
+	if ! pgrep -u "$USER" ssh-agent >/dev/null ; then
+		eval "$(ssh-agent -s)" 
+	fi
+
+	echo "SSH key added to the agent."
+	ssh-add ~/.ssh/id_ed25519
+}
+
+if [[ $# -eq 0 ]]; then
+	show_usage
+	exit 1
+fi
+
+case "$1" in
+	-g|--generate)
+	if [[ -z "$2" ]]; then
+		echo "Error: No email provided."
+		show_usage
+		exit 1
+	fi
+
+	# Check if the email is valid
+	if [[ ! "$2" =~ ^[^@]+@[^@]+\.[^@]+$ ]]; then
+		echo "Error: Invalid email format."
+		exit 1
+	fi
+
+	email="$2"
+	generate_ssh_key
+	exit 0
+	;;
+	-h | --help)
+		show_usage
+		exit 0
+		;;
+	-s | --show)
+		show_ssh_key
+		exit 0
+		;;
+	-c | --check)
+		check_existing_ssh_key
+		exit 0
+		;;
+	*)
+		echo "Error: Invalid option."
+		show_usage
+		exit 1
+		;;
+esac
+
