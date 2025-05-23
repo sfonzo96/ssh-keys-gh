@@ -19,6 +19,15 @@ mostrar la clave pública actual y generar una nueva clave SSH ED25519 usando un
 -   Instalar `ssh-keygen` si no está presente
 -   Agregar automáticamente la clave al `ssh-agent` si está corriendo
 
+## Preparación
+
+Clonar este repositorio en tu máquina local ejecutando los siguientes comandos:
+
+```bash
+git clone https://github.com/sfonzo96/ssh-keys-gh
+cd ssh-keys-gh
+```
+
 ## Uso
 
 ```bash

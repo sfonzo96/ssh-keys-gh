@@ -19,6 +19,15 @@ current public key, and generating a new ED25519 SSH key with a provided email.
 -   Optionally install `ssh-keygen` if it's not present
 -   Automatically adds the key to `ssh-agent` if it's running
 
+## Setup
+
+Clone this repository to your local machine running the following commands:
+
+```bash
+git clone https://github.com/sfonzo96/ssh-keys-gh
+cd ssh-keys-gh
+```
+
 ## Usage
 
 ```bash
