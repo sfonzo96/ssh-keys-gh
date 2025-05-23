@@ -68,6 +68,22 @@ Mostrar tu clave pública SSH:
 ./set_ssh_key.sh --show
 ```
 
+## Agregar la clave SSH en GitHub
+
+-   Después de generar la clave SSH, necesitas agregarla a tu cuenta de GitHub. Sigue estos pasos:
+
+    -   Copia la clave SSH generada (output del script completo) al portapapeles.
+    -   Ve a la configuración de tu cuenta de GitHub.
+    -   Navega hasta "SSH and GPG keys".
+    -   Haz clic en "New SSH key" (Nueva clave SSH).
+    -   Añade un título para la clave (por ejemplo, "Clave SSH de mi laptop").
+    -   Asegúrate de que el campo "Key type" tenga seleccionada la opción "Authentication Key" (Clave de autenticación).
+    -   Pega la clave SSH en el campo "Key".
+    -   Haz clic en "Add SSH key" (Agregar clave SSH).
+    -   Es posible que se te pida ingresar tu contraseña de GitHub para confirmar la adición de la clave.
+
+-   Seguir estos pasos te permitirá hacer _push_ y _pull_ desde tus repositorios de GitHub de inmediato.
+
 ## Notas
 
 -   Si `ssh-keygen` no está instalado, el script preguntará si deseás instalarlo usando `apt-get`.

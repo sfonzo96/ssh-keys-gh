@@ -64,6 +64,22 @@ Show your current SSH public key:
 ./set_ssh_key.sh --show
 ```
 
+## Add your SSH key to GitHub
+
+-   After generating the SSH key, you need to add it to your GitHub account. Follow these steps:
+
+    -   Copy the SSH key to your clipboard:
+    -   Go to your GitHub account settings.
+    -   Navigate to "SSH and GPG keys".
+    -   Click on "New SSH key".
+    -   Add a title for the key (e.g., "My Laptop SSH Key").
+    -   Make sure the "Key type" field has the "Authentication Key" option selected.
+    -   Paste the SSH key into the "Key" field.
+    -   Click "Add SSH key".
+    -   You may be prompted to enter your GitHub password to confirm the addition of the key.
+
+-   Following those steps should allow you to _push_ and _pull_ from your GitHub repositories right away.
+
 ## Notes
 
 -   If `ssh-keygen` is not installed, the script will prompt to install it using `apt-get`.
