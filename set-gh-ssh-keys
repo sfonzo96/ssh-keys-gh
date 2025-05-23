@@ -4,7 +4,7 @@ PROGNAME="$(basename $0)"
 
 show_usage() {
 	echo "$PROGNAME: Set SSH keys for a user"
-	echo "Usage: $PROGNAME [ -h, --help | -s, --show | -c, --check | -g, --generate email]" 
+	echo "Usage: $PROGNAME [ -h, --help | -s, --show | -c, --check | -g, --generate <email>]" 
 	return
 }
 
@@ -58,6 +58,9 @@ generate_ssh_key() {
 	ssh-keygen -t ed25519 -C "$email" -f ~/.ssh/id_ed25519 -N "" # -t is type -C is comment -f is file -N "" is no passphrase
 	echo "SSH key generated successfully. Your public key is:"
 	show_ssh_key
+
+	add_to_agent
+	
 	exit 0
 }
 
